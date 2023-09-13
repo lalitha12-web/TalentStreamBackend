@@ -20,7 +20,7 @@ public class RegisterService {
 	    private EmailUtil emailUtil;
 	    @Autowired
 	    private RegisterRepository registerRepository;
-	    public RegisterwithOTP register(Register register) {
+	    public RegisterwithOTP register(Register register) throws javax.mail.MessagingException {
 
 	        Optional<RegisterwithOTP> existingApplicant = registerRepository.findByEmail(register.getEmail());
 
@@ -32,15 +32,16 @@ public class RegisterService {
 	            String otp = otpUtil.generateOtp();
 	            try {
 	                emailUtil.sendOtpEmail(register.getEmail(), otp);
-	            } catch (MessagingException e) {
+	            } catch (Exception e) {
 	                throw new RuntimeException("Unable to send otp please try again");
 	            }
 	            RegisterwithOTP user = new RegisterwithOTP();
 	            user.setName(register.getName());
 	            user.setEmail(register.getEmail());
 	            user.setPassword(register.getPassword());
+	           
 	            user.setOtp(otp);
-	            user.setOtpGeneratedTime(LocalDateTime.now());
+	            user.setOtpGeneratedTime(null);
 	           // userRepository.save(user);
 
 	            return registerRepository.save(user);  }
@@ -51,7 +52,7 @@ public class RegisterService {
 	                .orElseThrow(() -> new RuntimeException("User not found with this email: " + email));
 	        if (user.getOtp().equals(otp) && Duration.between(user.getOtpGeneratedTime(),
 	                LocalDateTime.now()).getSeconds() < (1 * 120)) {
-	            user.setOtp(null);
+	            user.setOtp(otp);
 	           registerRepository.save(user);
 	            return "OTP verified You can continue";
 	        }

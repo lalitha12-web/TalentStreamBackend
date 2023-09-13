@@ -1,6 +1,8 @@
 package com.talentstream.controller;
 import java.util.Map;
 
+import javax.mail.MessagingException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +17,7 @@ public class RegisterController {
     private RegisterService registerService;
 
     @PostMapping("/api/applicant-register")
-    public ResponseEntity<RegisterwithOTP> register(@RequestBody Register register) {
+    public ResponseEntity<RegisterwithOTP> register(@RequestBody Register register) throws MessagingException {
         return new ResponseEntity<>(registerService.register(register), HttpStatus.OK);
     }
 
