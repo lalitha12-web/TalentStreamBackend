@@ -87,5 +87,16 @@ public class JobRecruiter {
         this.roles = role;
     }
 
+	public JobRecruiter(Long recruiterId, String companyName, String mobileNo, String email, String password,
+			String roles) {
+		super();
+		this.recruiterId = recruiterId;
+		this.companyName = companyName;
+		this.mobileNo = mobileNo;
+		this.email = email;
+		this.password = password;
+		this.roles = roles;
+	}
+
    
 }

@@ -134,4 +134,20 @@ public class CompanyProfile {
                 ", roles='" + roles + '\'' +
                 '}';
     }
+
+	public CompanyProfile(Long id, JobRecruiter jobRecruiter, String companyName, String website, String phoneNumber,
+			String email, String headOffice, byte[] companyLogo, List<String> socialProfiles, String roles) {
+		super();
+		this.id = id;
+		this.jobRecruiter = jobRecruiter;
+		this.companyName = companyName;
+		this.website = website;
+		this.phoneNumber = phoneNumber;
+		this.email = email;
+		this.headOffice = headOffice;
+		this.companyLogo = companyLogo;
+		this.socialProfiles = socialProfiles;
+		this.roles = roles;
+	}
+    
 }
