@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.talentstream.entity.Job;
-import com.talentstream.repository.JobRecruiterRepository;
+
 import com.talentstream.repository.JobRepository;
 
 @Service

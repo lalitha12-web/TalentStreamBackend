@@ -56,7 +56,7 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		
 				.authorizeRequests()
 				.antMatchers("/save-company-profiles","/getCompanyProfile/{id}","/saveJob","/viewJobs").hasAnyRole("JOBRECRUITER")
-			    .antMatchers("/authenticate","/send-otp","/verify-otp/{email}","/saveRecruiters").permitAll()
+			    .antMatchers("/authenticate","/send-otp","/verify-otp","/saveRecruiters","/api/applicant-register","/registration-send-otp").permitAll()
 						.anyRequest().authenticated().and().
 						exceptionHandling().and().sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);

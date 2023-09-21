@@ -1,8 +1,11 @@
 package com.talentstream.service;
-import com.jobapplicant.example.Frontendversion.Entity.ApplicantProfile;
-import com.jobapplicant.example.Frontendversion.Repository.ApplicantProfileRepository;
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.talentstream.entity.ApplicantProfile;
+import com.talentstream.repository.ApplicantProfileRepository;
 
 @Service
 public class ApplicantProfileService {

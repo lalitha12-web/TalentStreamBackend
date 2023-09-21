@@ -1,5 +1,6 @@
 package com.talentstream.entity;
-import jakarta.persistence.*;
+import javax.persistence.Embeddable;
+
 import lombok.Getter;
 import lombok.Setter;
 @Embeddable

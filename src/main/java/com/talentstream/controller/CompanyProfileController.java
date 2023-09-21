@@ -23,7 +23,11 @@ public class CompanyProfileController {
     @PostMapping("/save-company-profiles")
     public ResponseEntity<CompanyProfile> createCompanyProfile(@RequestBody CompanyProfile companyProfile) {
         CompanyProfile savedProfile = companyProfileService.saveCompanyProfile(companyProfile);
+        if(savedProfile!=null)
         return new ResponseEntity<>(savedProfile, HttpStatus.CREATED);
+        else {
+            return new ResponseEntity<>( HttpStatus.OK);
+        }
     }
 
     @GetMapping("/getCompanyProfile/{id}")

@@ -43,10 +43,6 @@ public class JobRecruiterService implements UserDetailsService{
         if (recruiterRepository.existsByEmail(recruiter.getEmail())) {
             return ResponseEntity.badRequest().body("Email already registered");
         }
-
-        // Save the recruiter if the email is not already registered
-//        String encodedPassword = passwordEncoder.encode(recruiter.getPassword());
-//        recruiter.setPassword(encodedPassword);
         recruiter.setPassword(passwordEncoder.encode(recruiter.getPassword()));
         recruiterRepository.save(recruiter);
         return ResponseEntity.ok("Recruiter registered successfully");

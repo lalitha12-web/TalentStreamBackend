@@ -1,9 +1,13 @@
 package com.talentstream.entity;
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.Date;
 
 @Entity
+@JsonIgnoreProperties({"companyProfile"})
 public class JobRecruiter {
 
     @Id
@@ -11,10 +15,10 @@ public class JobRecruiter {
     private Long recruiterId;
 
     @Column(nullable = false)
-    private String companyName;
+    private String companyname;
 
     @Column(nullable = false, unique = true)
-    private String mobileNo;
+    private String mobilenumber;
 
     @Column(nullable = false, unique = true)
     private String email;
@@ -26,6 +30,11 @@ public class JobRecruiter {
 
     @Column(nullable = false)
     private String roles="ROLE_JOBRECRUITER"; // Add the role field
+    @ManyToOne
+
+    @JoinColumn(name = "company_profile_id")
+
+    private CompanyProfile companyProfile;
 
     // Constructors, getters, setters, and other methods
 
@@ -45,23 +54,24 @@ public class JobRecruiter {
         this.recruiterId = recruiterId;
     }
 
-    public String getCompanyName() {
-        return companyName;
-    }
+   
+    public String getCompanyname() {
+		return companyname;
+	}
 
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
-    }
+	public void setCompanyname(String companyname) {
+		this.companyname = companyname;
+	}
 
-    public String getMobileNo() {
-        return mobileNo;
-    }
+	public String getMobilenumber() {
+		return mobilenumber;
+	}
 
-    public void setMobileNo(String mobileNo) {
-        this.mobileNo = mobileNo;
-    }
+	public void setMobilenumber(String mobilenumber) {
+		this.mobilenumber = mobilenumber;
+	}
 
-    public String getEmail() {
+	public String getEmail() {
         return email;
     }
 
@@ -86,17 +96,6 @@ public class JobRecruiter {
     public void setRoles(String role) {
         this.roles = role;
     }
-
-	public JobRecruiter(Long recruiterId, String companyName, String mobileNo, String email, String password,
-			String roles) {
-		super();
-		this.recruiterId = recruiterId;
-		this.companyName = companyName;
-		this.mobileNo = mobileNo;
-		this.email = email;
-		this.password = password;
-		this.roles = roles;
-	}
 
    
 }

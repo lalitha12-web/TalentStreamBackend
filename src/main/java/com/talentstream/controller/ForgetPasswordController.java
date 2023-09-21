@@ -9,6 +9,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,6 +25,7 @@ import com.talentstream.service.JobRecruiterService;
 import com.talentstream.service.OtpService;
 
 @RestController
+@CrossOrigin
 public class ForgetPasswordController {
 	@Autowired
     private OtpService otpService;
@@ -65,13 +67,16 @@ public class ForgetPasswordController {
     }
     
     
-    @PostMapping("/verify-otp/{email}")
+    @PostMapping("/verify-otp")
     public ResponseEntity<String> verifyOtp(
-        @PathVariable String email,
-        @RequestBody OtpVerificationRequest otpRequest
+       @RequestBody  OtpVerificationRequest verificationRequest
     ) {
-        String enteredOtp = otpRequest.getEnteredOtp();
+       
+        String otp=verificationRequest.getOtp();
 
+        String email=verificationRequest.getEmail();
+    	
+        System.out.println(otp+email);
         if (!otpService.isEmailAssociatedWithOtp(email)) {
             return ResponseEntity.badRequest().body("Email is not correct");
         }
@@ -80,7 +85,7 @@ public class ForgetPasswordController {
             return ResponseEntity.badRequest().body("Expired OTP. Please request a new one.");
         }
 
-        if (otpService.validateOtp(email, enteredOtp)) {
+        if (otpService.validateOtp(email, otp)) {
             return ResponseEntity.ok("OTP verified. Proceed with password reset.");
         } else {
             return ResponseEntity.badRequest().body("Incorrect OTP.");

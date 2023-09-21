@@ -2,6 +2,9 @@ package com.talentstream.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import com.talentstream.entity.ApplicantProfile;
+import com.talentstream.service.ApplicantProfileService;
 public class ApplicantProfileController {
 	private final ApplicantProfileService applicantProfileService;
 
