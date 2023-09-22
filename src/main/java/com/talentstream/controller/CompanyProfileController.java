@@ -6,13 +6,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.talentstream.entity.CompanyProfile;
+import com.talentstream.entity.JobRecruiter;
+import com.talentstream.repository.JobRecruiterRepository;
 import com.talentstream.service.CompanyProfileService;
 
 import java.util.Optional;
 
 @RestController
 public class CompanyProfileController {
-
+	 @Autowired
+	JobRecruiterRepository jobRecruiterRepository; 
+	 @Autowired
     private final CompanyProfileService companyProfileService;
 
     @Autowired
@@ -21,12 +25,19 @@ public class CompanyProfileController {
     }
 
     @PostMapping("/save-company-profiles")
-    public ResponseEntity<CompanyProfile> createCompanyProfile(@RequestBody CompanyProfile companyProfile) {
-        CompanyProfile savedProfile = companyProfileService.saveCompanyProfile(companyProfile);
-        if(savedProfile!=null)
-        return new ResponseEntity<>(savedProfile, HttpStatus.CREATED);
-        else {
-            return new ResponseEntity<>( HttpStatus.OK);
+    public ResponseEntity<String> createCompanyProfile(@RequestBody CompanyProfile companyProfile) {
+    	JobRecruiter jobRecruiter = jobRecruiterRepository.findByrecruiterId(companyProfile.getJobRecruiter().getRecruiterId());
+
+        if (jobRecruiter != null) {
+            // Associate the JobRecruiter with the CompanyProfile
+            companyProfile.setJobRecruiter(jobRecruiter);
+            // Save the CompanyProfile with the associated JobRecruiter
+            companyProfileService.saveCompanyProfile(companyProfile);
+            return ResponseEntity.status(HttpStatus.OK).body("CompanyProfile saved successfully.");
+        } else {
+            // Handle the case where the JobRecruiter with the provided ID does not exist
+            // You can return an error response with a 404 Not Found status code
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("JobRecruiter with ID " + companyProfile.getJobRecruiter().getRecruiterId() + " not found.");
         }
     }
 

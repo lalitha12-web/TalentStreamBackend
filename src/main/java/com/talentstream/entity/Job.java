@@ -1,27 +1,33 @@
 package com.talentstream.entity;
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.List;
 
 @Entity
+@JsonIgnoreProperties({"jobRecruiters"})
 public class Job {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne
-    @JoinColumn(name = "company_profile_id",referencedColumnName = "id")
-    private CompanyProfile companyProfile;
+    @ManyToOne//(mappedBy = "companyProfile", cascade = CascadeType.ALL)
+    @JoinColumn(name = "jobRecruiter_id")
+    private JobRecruiter jobRecruiter;
 
     @Column(nullable = false)
     private String jobTitle;
 
-    public CompanyProfile getCompanyProfile() {
-		return companyProfile;
+    
+
+	public JobRecruiter getJobRecruiter() {
+		return jobRecruiter;
 	}
 
-	public void setCompanyProfile(CompanyProfile companyProfile) {
-		this.companyProfile = companyProfile;
+	public void setJobRecruiter(JobRecruiter jobRecruiter) {
+		this.jobRecruiter = jobRecruiter;
 	}
 
 	@Column(nullable = false)

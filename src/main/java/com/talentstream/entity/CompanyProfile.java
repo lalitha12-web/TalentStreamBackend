@@ -38,9 +38,9 @@ public class CompanyProfile {
 
  
 
-    @OneToMany(mappedBy = "companyProfile", cascade = CascadeType.ALL)
-
-    private List<JobRecruiter> jobRecruiters;
+   @OneToOne//(mappedBy = "companyProfile", cascade = CascadeType.ALL)
+    @JoinColumn(name = "jobRecruiter_id")
+    private JobRecruiter jobRecruiter;
 
  
 
@@ -142,20 +142,18 @@ public class CompanyProfile {
 
     }
 
+
+
+	public JobRecruiter getJobRecruiter() {
+		return jobRecruiter;
+	}
+
+
+
+	public void setJobRecruiter(JobRecruiter jobRecruiter) {
+		this.jobRecruiter = jobRecruiter;
+	}
+
  
-
-    public List<JobRecruiter> getJobRecruiters() {
-
-        return jobRecruiters;
-
-    }
-
- 
-
-    public void setJobRecruiters(List<JobRecruiter> jobRecruiters) {
-
-        this.jobRecruiters = jobRecruiters;
-
-    }
 
 }

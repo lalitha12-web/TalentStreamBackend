@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.Date;
 
 @Entity
-@JsonIgnoreProperties({"companyProfile"})
+@JsonIgnoreProperties({"job"})
 public class JobRecruiter {
 
     @Id
@@ -30,11 +30,11 @@ public class JobRecruiter {
 
     @Column(nullable = false)
     private String roles="ROLE_JOBRECRUITER"; // Add the role field
-    @ManyToOne
-
-    @JoinColumn(name = "company_profile_id")
-
-    private CompanyProfile companyProfile;
+//    @ManyToOne
+//
+//    @JoinColumn(name = "company_profile_id")
+//
+//    private CompanyProfile companyProfile;
 
     // Constructors, getters, setters, and other methods
 
