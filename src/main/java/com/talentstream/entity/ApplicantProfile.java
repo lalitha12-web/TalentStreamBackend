@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -33,7 +34,19 @@ public class ApplicantProfile {
 
     @ElementCollection
     private List<String> skills;
+    @Column(nullable = false)
+    private String roles="ROLE_JOBAPPLICANT";
 
     @ElementCollection
     private List<ExperienceDetails> experienceDetails;
+
+	public List<String> getSkills() {
+		// TODO Auto-generated method stub
+		return skills;
+	}
+
+	public int getApplicantid() {
+		// TODO Auto-generated method stub
+		return applicantid;
+	}
 }

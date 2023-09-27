@@ -81,7 +81,7 @@ public class JobRecruiterService implements UserDetailsService{
 	 
 
 	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+	public UserDetails  loadUserByUsername(String username) throws UsernameNotFoundException {
 		// TODO Auto-generated method stub
 		 JobRecruiter jobRecruiter =recruiterRepository.findByEmail(username);
 		 //new User(username, username, null)

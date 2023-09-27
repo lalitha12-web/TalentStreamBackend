@@ -33,7 +33,7 @@ public class RegisterController {
         return new ResponseEntity<>(registerService.regenerateOtp(email), HttpStatus.OK);
     }
 
-    @PutMapping("/api/applicant-login")
+    @PostMapping("/api/applicant-login")
     public ResponseEntity<String> login(@RequestBody Login login) {
         return new ResponseEntity<>(registerService.login(login), HttpStatus.OK);
     }
