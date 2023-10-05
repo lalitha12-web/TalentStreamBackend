@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.talentstream.entity.ApplicantProfile;
 import com.talentstream.service.ApplicantProfileService;
+@RestController
 public class ApplicantProfileController {
 	private final ApplicantProfileService applicantProfileService;
 
@@ -13,12 +14,12 @@ public class ApplicantProfileController {
         this.applicantProfileService = applicantProfileService;
     }
 
-   @PostMapping("/insertdata")
+   @PostMapping("/applicants/createprofile")
     public ResponseEntity<ApplicantProfile> createOrUpdateApplicantProfile(@RequestBody ApplicantProfile applicantProfile) {
         ApplicantProfile savedProfile = applicantProfileService.createOrUpdateApplicantProfile(applicantProfile);
         return ResponseEntity.ok(savedProfile);
     }
-   @GetMapping("/{applicantId}")
+   @GetMapping("/applicants/getdetails/{applicantId}")
    public ResponseEntity<ApplicantProfile> getApplicantProfileById(@PathVariable int applicantId) {
        ApplicantProfile applicantProfile = applicantProfileService.getApplicantProfileById(applicantId);
        if (applicantProfile != null) {
@@ -27,7 +28,7 @@ public class ApplicantProfileController {
            return ResponseEntity.notFound().build();
        }
    }
-       @DeleteMapping("/{applicantId}")
+       @DeleteMapping("/applicants/deletedetails/{applicantId}")
        public ResponseEntity<Void> deleteApplicantProfile(@PathVariable int applicantId) {
            applicantProfileService.deleteApplicantProfile(applicantId);
            return ResponseEntity.noContent().build();

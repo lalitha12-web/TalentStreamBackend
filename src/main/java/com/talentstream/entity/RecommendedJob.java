@@ -32,13 +32,13 @@ public class RecommendedJob {
 
     
 
-	public RecommendedJob(int applicantId, Long jobId, String jobTitle, String companyName, String location,
+	public RecommendedJob(long l, Long jobId, String jobTitle, String companyName, String location,
 
 			double minSalary, double maxSalary, int minExperience, int maxExperience) {
 
 		super();
 
-		this.applicantId = applicantId;
+		this.applicantId = (int) l;
 
 		this.jobId = jobId;
 

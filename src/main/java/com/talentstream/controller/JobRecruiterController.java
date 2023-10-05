@@ -5,9 +5,6 @@ package com.talentstream.controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
- 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,10 +13,8 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-
- 
-
 import com.talentstream.service.JwtUtil;
+import com.talentstream.service.MyUserDetailsService;
 import com.talentstream.service.OtpService;
 import com.talentstream.response.ResponseHandler;
 import com.talentstream.entity.AuthenticationResponse;
@@ -45,66 +40,63 @@ public class JobRecruiterController {
 
     @Autowired
     private EmailService emailService; // Your email service
-
-
 	@Autowired
      JobRecruiterService recruiterService;
      @Autowired
 	private AuthenticationManager authenticationManager;
      @Autowired
 	private JwtUtil jwtTokenUtil;
+     @Autowired
+     MyUserDetailsService myUserDetailsService;
     @Autowired
     public JobRecruiterController(JobRecruiterService recruiterService) {
         this.recruiterService = recruiterService;
     }
-
- 
-
-    @PostMapping("/saveRecruiters")
+   @PostMapping("/Recruiters")
     public ResponseEntity<String> registerRecruiter(@RequestBody JobRecruiter recruiter) {
         return recruiterService.saveRecruiter(recruiter);
     }
 
-    @PostMapping("/authenticate")
+//    @PostMapping("/authenticate")
+//    public ResponseEntity<Object> login(@RequestBody RecruiterLogin loginRequest) throws Exception {
+//        boolean loginResult = recruiterService.login(loginRequest.getEmail(), loginRequest.getPassword());
+//
+// 
+//
+//        System.out.println(loginResult);
+//        System.out.println(loginRequest.getEmail());
+//
+//        if (loginResult) {
+//        	return createAuthenticationToken(loginRequest);
+//        } else {
+//            return new ResponseEntity<>("failed", HttpStatus.BAD_REQUEST);
+//        }
+//    }
+    @PostMapping("/recruiterLogin")
     public ResponseEntity<Object> login(@RequestBody RecruiterLogin loginRequest) throws Exception {
-        boolean loginResult = recruiterService.login(loginRequest.getEmail(), loginRequest.getPassword());
-
- 
-
-        System.out.println(loginResult);
+       JobRecruiter recruiter = recruiterService.login(loginRequest.getEmail(), loginRequest.getPassword());
         System.out.println(loginRequest.getEmail());
+        System.out.println(recruiter.getEmail());
 
-        if (loginResult) {
-        	return createAuthenticationToken(loginRequest);
+        if (recruiter!=null) {
+        	return createAuthenticationToken(loginRequest,recruiter);
         } else {
             return new ResponseEntity<>("failed", HttpStatus.BAD_REQUEST);
         }
     }
 
-    @PostMapping("/registration-send-otp")
+    @PostMapping("recruiters/registration-send-otp")
     public ResponseEntity<String> sendOtp(@RequestBody ResetPasswordRequest request) {
         String userEmail = request.getEmail();
         JobRecruiter jobRecruiter = recruiterService.findByEmail(userEmail);
 
         if (jobRecruiter == null) {
            // return ResponseEntity.badRequest().body("Email is not registered.");
-
- 
-
-            String otp = otpService.generateOtp(userEmail);
+       String otp = otpService.generateOtp(userEmail);
             //tempEmailStorage.put(userEmail, userEmail);
-
- 
-
             // Send OTP email using EmailService
             emailService.sendOtpEmail(userEmail, otp);
-
- 
-
             otpVerificationMap.put(userEmail, true); // Mark OTP as verified
-
- 
-
             return ResponseEntity.ok("OTP sent to your email.");
         }
         else {
@@ -112,17 +104,17 @@ public class JobRecruiterController {
         }
     }
 
-    private ResponseEntity<Object> createAuthenticationToken(@RequestBody RecruiterLogin loginRequest) throws Exception {
+    private ResponseEntity<Object> createAuthenticationToken(RecruiterLogin login, JobRecruiter recruiter) throws Exception {
 		// TODO Auto-generated method stub
     	try {
 			authenticationManager.authenticate(
-					new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword())
+					new UsernamePasswordAuthenticationToken(login.getEmail(), login.getPassword())
 			);
 		}
 		catch (BadCredentialsException e) {
 			throw new Exception("Incorrect username or password", e);
 		}
-    	final UserDetails userDetails = recruiterService.loadUserByUsername(loginRequest.getEmail());
+    	final UserDetails userDetails = myUserDetailsService.loadUserByUsername(recruiter.getEmail());
 
  
 
@@ -131,7 +123,7 @@ public class JobRecruiterController {
  
 
   
-		return ResponseHandler.generateResponse("Login successfully"+userDetails.getAuthorities(), HttpStatus.OK, new AuthenticationResponse(jwt));
+		return ResponseHandler.generateResponse("Login successfully"+userDetails.getAuthorities(), HttpStatus.OK, new AuthenticationResponse(jwt),recruiter.getEmail(),recruiter.getCompanyname(),recruiter.getRecruiterId());
 	}
 
  

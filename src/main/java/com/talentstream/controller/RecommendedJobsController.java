@@ -29,7 +29,7 @@ public class RecommendedJobsController {
 
 	
 
-	@GetMapping("applicant/{applicantId}/recommended-jobs")
+	@GetMapping("/applicants/recommended-jobs/{applicantId}")
 
     public ResponseEntity<List<RecommendedJob>> getRecommendedJobsForApplicant(
 
@@ -47,7 +47,7 @@ public class RecommendedJobsController {
 
 	
 
-	 @GetMapping("applicant/allapplicants/recommended-jobs")
+	 @GetMapping("applicants/allapplicants/recommended-jobs")
 
 	    public ResponseEntity<List<RecommendedJob>> getAllRecommendedJobs() {
 

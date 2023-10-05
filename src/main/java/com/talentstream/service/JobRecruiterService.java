@@ -20,16 +20,21 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.security.core.userdetails.User;
 
+import com.talentstream.entity.ApplicantRegistration;
 import com.talentstream.entity.JobRecruiter;
+import com.talentstream.repository.ApplicantProfileRepository;
 import com.talentstream.repository.JobRecruiterRepository;
+import com.talentstream.repository.RegisterRepository;
 
 @Service
-public class JobRecruiterService implements UserDetailsService{
+public class JobRecruiterService {
 	 
 	    private PasswordEncoder passwordEncoder;
 	    
 	   @Autowired
         JobRecruiterRepository recruiterRepository;
+	   @Autowired
+	   RegisterRepository applicantRepository;
 
    
 	
@@ -47,13 +52,13 @@ public class JobRecruiterService implements UserDetailsService{
         recruiterRepository.save(recruiter);
         return ResponseEntity.ok("Recruiter registered successfully");
     }
-    public boolean login(String email, String password) {
+    public JobRecruiter login(String email, String password) {
         JobRecruiter recruiter = recruiterRepository.findByEmail(email);
 
         if (recruiter != null && passwordEncoder.matches(password, recruiter.getPassword())) {
-            return true; // Login successful
+            return recruiter; // Login successful
         }  else {
-            return false; // Login failed
+            return null; // Login failed
         }
     }
     public JobRecruiter findById(Long id) {
@@ -80,15 +85,38 @@ public class JobRecruiterService implements UserDetailsService{
 	
 	 
 
-	@Override
-	public UserDetails  loadUserByUsername(String username) throws UsernameNotFoundException {
-		// TODO Auto-generated method stub
-		 JobRecruiter jobRecruiter =recruiterRepository.findByEmail(username);
-		 //new User(username, username, null)
-		 return  new User(jobRecruiter.getEmail(), jobRecruiter.getPassword(),Arrays.stream(jobRecruiter.getRoles().split(","))
-					.map(SimpleGrantedAuthority::new)
-					.collect(Collectors.toList()));
-	}
+//	@Override
+//	public UserDetails  loadUserByUsername(String username) throws UsernameNotFoundException {
+//		// TODO Auto-generated method stub
+//		 JobRecruiter jobRecruiter =recruiterRepository.findByEmail(username);
+//		 //new User(username, username, null)
+//		 return  new User(jobRecruiter.getEmail(), jobRecruiter.getPassword(),Arrays.stream(jobRecruiter.getRoles().split(","))
+//					.map(SimpleGrantedAuthority::new)
+//					.collect(Collectors.toList()));
+//	}
+//	@Override
+//	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+//	    // Check if the email exists in the JobRecruiter repository
+//	    JobRecruiter jobRecruiter = recruiterRepository.findByEmail(username);
+//
+//	    if (jobRecruiter != null) {
+//	        // Email belongs to a recruiter
+//	        return new User(jobRecruiter.getEmail(), jobRecruiter.getPassword(), Arrays.asList(new SimpleGrantedAuthority("ROLE_JOBRECRUITER")));
+//	    } else {
+//	        // Email doesn't exist in the recruiter repository, check the Applicant repository
+//	    	ApplicantRegistration applicant = applicantRepository.findByEmail(username);
+//
+//	        if (applicant != null) {
+//	            // Email belongs to an applicant
+//	            return new User(applicant.getEmail(), applicant.getPassword(), Arrays.asList(new SimpleGrantedAuthority("ROLE_JOBAPPLICANT")));
+//	        } else {
+//	            // Neither a recruiter nor an applicant with this email was found
+//	            throw new UsernameNotFoundException("User not found with email: " + username);
+//	        }
+//	    }
+//	}
+//	
+
 	
 
 }

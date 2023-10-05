@@ -3,12 +3,8 @@ package com.talentstream.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.talentstream.entity.ApplicantProfile;
-
+import com.talentstream.entity.SavedJob;
 @Repository
-public interface ApplicantProfileRepository extends JpaRepository<ApplicantProfile, Integer> {
-
-	
-
-
+public interface SavedJobRepository extends JpaRepository<SavedJob, Long> {
+   
 }

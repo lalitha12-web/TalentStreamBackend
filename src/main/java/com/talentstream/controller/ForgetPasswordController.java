@@ -42,7 +42,7 @@ public class ForgetPasswordController {
     
     //private Map<String, String> tempEmailStorage = new HashMap<>();
     
-    @PostMapping("/send-otp")
+    @PostMapping("recruiters/send-otp")
     public ResponseEntity<String> sendOtp(@RequestBody ResetPasswordRequest request) {
         String userEmail = request.getEmail();
         JobRecruiter jobRecruiter = jobRecruiterService.findByEmail(userEmail);
@@ -67,7 +67,7 @@ public class ForgetPasswordController {
     }
     
     
-    @PostMapping("/verify-otp")
+    @PostMapping("recruiters/verify-otp")
     public ResponseEntity<String> verifyOtp(
        @RequestBody  OtpVerificationRequest verificationRequest
     ) {
@@ -95,7 +95,7 @@ public class ForgetPasswordController {
 
     
     
-    @PostMapping("/reset-password/set-new-password/{email}")
+    @PostMapping("recruiters/reset-password/set-new-password/{email}")
     public ResponseEntity<String> setNewPassword(@RequestBody NewPasswordRequest request,  @PathVariable String email) {
         String newPassword = request.getNewPassword();
         String confirmedPassword = request.getConfirmedPassword();

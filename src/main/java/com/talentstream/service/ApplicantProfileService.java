@@ -20,12 +20,12 @@ public class ApplicantProfileService {
 	        return applicantProfileRepository.save(applicantProfile);
 	    }
 
-	    public ApplicantProfile getApplicantProfileById(int applicantId) {
-	        return applicantProfileRepository.findById(applicantId).orElse(null);
+	    public ApplicantProfile getApplicantProfileById(long applicantId) {
+	        return applicantProfileRepository.findById((int) applicantId).orElse(null);
 	    }
 
-	    public void deleteApplicantProfile(int applicantId) {
-	        applicantProfileRepository.deleteById(applicantId);
+	    public void deleteApplicantProfile(long applicantId) {
+	        applicantProfileRepository.deleteById((int) applicantId);
 	    }
 
 }

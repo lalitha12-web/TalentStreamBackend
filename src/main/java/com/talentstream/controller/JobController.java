@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,7 +23,6 @@ import com.talentstream.service.JobRecruiterService;
 import com.talentstream.service.JobService;
 
 @RestController
-
 public class JobController {
     private final JobService jobService;
     @Autowired
@@ -34,10 +34,30 @@ public class JobController {
 //        this.recruiterService=recruiterService;
     }
 
-    @PostMapping("/saveJob")
-    public ResponseEntity<String> saveJob(@RequestBody @Valid Job job) {
-         // Associate eligibility with the job
-    	JobRecruiter jobRecruiter = jobRecruiterRepository.findByrecruiterId(job.getJobRecruiter().getRecruiterId());
+//    @PostMapping("/saveJob")
+//    public ResponseEntity<String> saveJob(@RequestBody @Valid Job job) {
+//         // Associate eligibility with the job
+//    	JobRecruiter jobRecruiter = jobRecruiterRepository.findByrecruiterId(job.getJobRecruiter().getRecruiterId());
+//
+//        if (jobRecruiter != null) {
+//            // Associate the JobRecruiter with the CompanyProfile
+//            job.setJobRecruiter(jobRecruiter);
+//            // Save the CompanyProfile with the associated JobRecruiter
+//            jobService.saveJob(job);
+//            return ResponseEntity.status(HttpStatus.OK).body("Job saved successfully.");
+//        } else {
+//            // Handle the case where the JobRecruiter with the provided ID does not exist
+//            // You can return an error response with a 404 Not Found status code
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("JobRecruiter with ID " + job.getJobRecruiter().getRecruiterId() + " not found.");
+//        }
+//        
+//        
+//    }
+    
+    @PostMapping("/recruiters/saveJob/{jobRecruiterId}")
+    public ResponseEntity<String> saveJob(@RequestBody @Valid Job job, @PathVariable Long jobRecruiterId) {
+        // Associate eligibility with the job
+        JobRecruiter jobRecruiter = jobRecruiterRepository.findByrecruiterId(jobRecruiterId);
 
         if (jobRecruiter != null) {
             // Associate the JobRecruiter with the CompanyProfile
@@ -48,13 +68,12 @@ public class JobController {
         } else {
             // Handle the case where the JobRecruiter with the provided ID does not exist
             // You can return an error response with a 404 Not Found status code
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("JobRecruiter with ID " + job.getJobRecruiter().getRecruiterId() + " not found.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("JobRecruiter with ID " + jobRecruiterId + " not found.");
         }
-        
-        
     }
+
     
-    @GetMapping("/viewJobs")
+    @GetMapping("recruiters/viewJobs")
     public ResponseEntity<List<Job>> getAllJobs() {
         List<Job> jobs = jobService.getAllJobs();
         return ResponseEntity.ok(jobs);

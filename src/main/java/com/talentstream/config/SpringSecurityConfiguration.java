@@ -54,16 +54,34 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		
 		httpSecurity.csrf().disable()
 		
-				.authorizeRequests()
-				.antMatchers("/save-company-profiles","/getCompanyProfile/{id}","/saveJob","/viewJobs").hasAnyRole("JOBRECRUITER")
-				.antMatchers("applicant/{applicantId}/recommended-jobs","/insertdata").hasAnyRole("JOBAPPLICANT")
-			    .antMatchers("/authenticate","/send-otp","/verify-otp","/saveRecruiters","/api/applicant-register","/registration-send-otp","/api/applicant-login").permitAll()
+		.authorizeRequests()
+		.antMatchers("/recruiters/company-profiles/{jobRecruiterId}","/recruiters/getCompanyProfile/{id}","/recruiters/saveJob/{jobRecruiterId}","recruiters/viewJobs").hasAnyRole("JOBRECRUITER")
+		.antMatchers("/applicants/recommended-jobs/{applicantId}","/viewApplicants","/applicants/createprofile","/applicants/getdetails/{applicantId}","/applicants/deletedetails/{applicantId}","/applicants/recommended-jobs/{applicantId}","/applicants/allapplicants/recommended-jobs","/applicants/job/{applicantId}/{jobId}","/applicants/viewjob/{jobId}","/applicants/applyjob").hasAnyRole("JOBAPPLICANT")
+	    .antMatchers("/recruiterLogin","recruiters/send-otp","recruiters/verify-otp","/Recruiters","/applicants","/recruiters/registration-send-otp","/applicantLogin","/applicants/sendotp","/applicants/verify-otp","/applicants/reset-password/{email}","recruiters/reset-password/set-new-password/{email}").permitAll()
 						.anyRequest().authenticated().and().
 						exceptionHandling().and().sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
 	}
+	
+	// @Override
+//	    protected void configure(HttpSecurity httpSecurity) throws Exception {
+//	        httpSecurity.csrf().disable()
+//	                .authorizeRequests()
+//	                    .antMatchers("/authenticate", "/send-otp", "/verify-otp", "/saveRecruiters", "/saveApplicant", "/registration-send-otp", "/applicantLogin").permitAll()
+//	                    .anyRequest().authenticated()
+//	                .and()
+//	                .exceptionHandling()
+//	                .and()
+//	                .sessionManagement()
+//	                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//	 .and()
+//    .httpBasic().disable()
+//    .formLogin().disable();
+//
+//        httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+//    }
 }
 
 	
