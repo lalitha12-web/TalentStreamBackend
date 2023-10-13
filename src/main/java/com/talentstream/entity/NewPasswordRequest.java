@@ -2,7 +2,11 @@ package com.talentstream.entity;
 
 public class NewPasswordRequest {
 
-    private String newPassword;
+    public NewPasswordRequest() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	private String newPassword;
     private String confirmedPassword;
     
 

@@ -3,15 +3,22 @@ package com.talentstream.entity;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 
 import io.jsonwebtoken.lang.Collections;
 @Getter
@@ -33,12 +40,23 @@ public class ApplicantProfile {
 
     @Embedded
     private GraduationDetails graduationDetails;
+    
+    @ManyToMany(fetch = FetchType.LAZY,cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE
+        })
 
-    @ElementCollection
-    private List<String> skills;
+    @JoinTable(
+      
+        joinColumns = @JoinColumn(name = "applicant_id"),
+        inverseJoinColumns = @JoinColumn(name = "applicantskill_id")
+
+    )
+    private Set<ApplicantSkills> skillsRequired=new HashSet<>();
 
     @ElementCollection
     private List<ExperienceDetails> experienceDetails;
+    
     @Column(nullable = false)
     private String roles="ROLE_JOBAPPLICANT";
 
@@ -82,12 +100,22 @@ public class ApplicantProfile {
 		this.graduationDetails = graduationDetails;
 	}
 
-	public List<String> getSkills() {
-		return skills;
+	
+
+	public Set<ApplicantSkills> getSkillsRequired() {
+		return skillsRequired;
 	}
 
-	public void setSkills(List<String> skills) {
-		this.skills = skills;
+	public void setSkillsRequired(Set<ApplicantSkills> skillsRequired) {
+		this.skillsRequired = skillsRequired;
+	}
+
+	public String getRoles() {
+		return roles;
+	}
+
+	public void setRoles(String roles) {
+		this.roles = roles;
 	}
 
 	public List<ExperienceDetails> getExperienceDetails() {

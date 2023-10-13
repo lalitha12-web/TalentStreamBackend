@@ -27,9 +27,7 @@ import com.talentstream.service.JobRecruiterService;
  
 
 @RestController
-
- 
-@CrossOrigin
+@CrossOrigin("*")
 public class JobRecruiterController {
 	@Autowired
     private OtpService otpService;
@@ -52,7 +50,7 @@ public class JobRecruiterController {
     public JobRecruiterController(JobRecruiterService recruiterService) {
         this.recruiterService = recruiterService;
     }
-   @PostMapping("/Recruiters")
+   @PostMapping("/recruiters")
     public ResponseEntity<String> registerRecruiter(@RequestBody JobRecruiter recruiter) {
         return recruiterService.saveRecruiter(recruiter);
     }
@@ -85,7 +83,7 @@ public class JobRecruiterController {
         }
     }
 
-    @PostMapping("recruiters/registration-send-otp")
+    @PostMapping("/recruiters/registration-send-otp")
     public ResponseEntity<String> sendOtp(@RequestBody ResetPasswordRequest request) {
         String userEmail = request.getEmail();
         JobRecruiter jobRecruiter = recruiterService.findByEmail(userEmail);

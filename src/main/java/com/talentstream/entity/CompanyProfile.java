@@ -46,6 +46,30 @@ public class CompanyProfile {
 
     // Constructors, getters, and setters
 
+   
+   
+  @ElementCollection
+  @CollectionTable(
+      name = "social_profiles",
+      joinColumns = @JoinColumn(name = "company_profile_id")
+  )
+  private List<String> socialProfiles;
+
+
+
+  // Constructors, getters, and setters...
+
+
+
+  public List<String> getSocialProfiles() {
+      return socialProfiles;
+  }
+
+
+
+  public void setSocialProfiles(List<String> socialProfiles) {
+      this.socialProfiles = socialProfiles;
+  }
  
 
     public Long getId() {

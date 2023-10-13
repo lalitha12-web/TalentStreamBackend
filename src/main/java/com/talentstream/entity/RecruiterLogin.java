@@ -3,7 +3,11 @@ package com.talentstream.entity;
 import javax.persistence.Id;
 
 public class RecruiterLogin {
-        @Id
+        public RecruiterLogin() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+		@Id
 	    private String email;
 	    private String password;
 		public String getEmail() {

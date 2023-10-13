@@ -43,7 +43,7 @@ public class CompanyProfileController {
     
     @PostMapping("/recruiters/company-profiles/{jobRecruiterId}")
     public ResponseEntity<String> createCompanyProfile(@RequestBody CompanyProfile companyProfile, @PathVariable Long jobRecruiterId) {
-        JobRecruiter jobRecruiter = jobRecruiterRepository.findByrecruiterId(jobRecruiterId);
+        JobRecruiter jobRecruiter = jobRecruiterRepository.findByRecruiterId(jobRecruiterId);
 
         if (jobRecruiter != null) {
             // Associate the JobRecruiter with the CompanyProfile

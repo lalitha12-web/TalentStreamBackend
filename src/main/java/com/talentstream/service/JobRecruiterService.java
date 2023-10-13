@@ -62,7 +62,7 @@ public class JobRecruiterService {
         }
     }
     public JobRecruiter findById(Long id) {
-       return recruiterRepository.findByrecruiterId(id);
+       return recruiterRepository.findByRecruiterId(id);
         
     }
     public List<JobRecruiter> getAllJobRecruiters() {

@@ -24,15 +24,7 @@ public class RecommendedJob {
 
     private int maxExperience;
 
-    
-
-    
-
-    
-
-    
-
-	public RecommendedJob(long l, Long jobId, String jobTitle, String companyName, String location,
+    	public RecommendedJob(long l, Long jobId, String jobTitle, String companyName, String location,
 
 			double minSalary, double maxSalary, int minExperience, int maxExperience) {
 

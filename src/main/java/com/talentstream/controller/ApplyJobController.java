@@ -3,7 +3,9 @@ package com.talentstream.controller;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,19 +28,20 @@ public class ApplyJobController {
 	 @Autowired
 	 private JobRepository jobRepository;
 
-	    @PostMapping("/applicant/applyjob")
-	    public String applyForJob(@RequestParam long applicantId, @RequestParam long jobId) {
-	      Optional<ApplicantProfile> applicant =  applicantProfileRepository.findById((int) applicantId);
-	       Optional<Job> job = jobRepository.findById(jobId) ;
+	 @PostMapping("/{applicantId}/applyjob/{jobId}")
+	    public ResponseEntity<String> applyForJob(
+	            @PathVariable int applicantId,
+	            @PathVariable long jobId) {
+	        Optional<ApplicantProfile> applicantOptional = applicantProfileRepository.findById(applicantId);
+	        Optional<Job> jobOptional = jobRepository.findById(jobId);
 
-	        if (applicant.isEmpty() || job.isEmpty()) {
-	            return "Invalid applicant or job.";
+	        if (applicantOptional.isEmpty() || jobOptional.isEmpty()) {
+	            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid applicant or job.");
 	        }
 
-	        ApplyJob applyJob = applyJobService.applyForJob(applicant, job);
-	        return"Job application submitted with ID: " + applyJob.getId();
+	        ApplyJob applyJob = applyJobService.applyForJob(applicantOptional.get(), jobOptional.get());
+	        return ResponseEntity.ok("Job application submitted with ID: " + applyJob.getId());
 	    }
-	    
 	    
 	    
 }

@@ -16,8 +16,8 @@ public class ApplyJobService {
 	 @Autowired
 	   private ApplyJobRepository applyJobRepository;
 	
-	    public ApplyJob applyForJob(Optional<ApplicantProfile> applicant, Optional<Job> job) {
-	    	ApplyJob jobApplication = new ApplyJob(applicant, job);
+	    public ApplyJob applyForJob(ApplicantProfile applicantProfile, Job job) {
+	    	ApplyJob jobApplication = new ApplyJob(applicantProfile, job);
 	        return applyJobRepository.save(jobApplication);
 	    }
 }

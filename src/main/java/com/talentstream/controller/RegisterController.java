@@ -15,8 +15,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+
 
 import com.talentstream.entity.ApplicantRegistration;
 import com.talentstream.entity.AuthenticationResponse;
@@ -38,9 +41,8 @@ import com.talentstream.service.JobRecruiterService;
  
 
  
-
+@CrossOrigin("*")
 @RestController
-
 public class RegisterController {
 	@Autowired
     MyUserDetailsService myUserDetailsService;
@@ -84,7 +86,7 @@ public class RegisterController {
 
  
 
-	    @PostMapping("/applicants")
+	    @PostMapping("/saveApplicant")
 
 	    public ResponseEntity<String> register(@RequestBody ApplicantRegistration applicant) {
 
@@ -158,7 +160,7 @@ public class RegisterController {
 		}
 
 
-	    @PostMapping("/applicants/sendotp")
+	    @PostMapping("/applicant/sendotp")
 
 	    public ResponseEntity<String> sendOtp(@RequestBody ApplicantRegistration  request) {
 
@@ -191,10 +193,21 @@ public class RegisterController {
 	        }
 
 	    }
-
- 
-
-	    
+	    @PostMapping("/applicant/forgotpassword/sendotp")
+	    public ResponseEntity<String> ForgotsendOtp(@RequestBody ApplicantRegistration  request) {
+	        String userEmail = request.getEmail();
+	        ApplicantRegistration applicant = regsiterService.findByEmailAddress(userEmail);
+	        if (applicant != null) {     
+	            String otp = otpService.generateOtp(userEmail);
+	         	            emailService.sendOtpEmail(userEmail, otp);
+	 	            otpVerificationMap.put(userEmail, true);
+	 	            System.out.println(otp);
+	 	            return ResponseEntity.ok("OTP sent successfully");
+	        }
+	        else {
+	        	 return ResponseEntity.badRequest().body("Email is already  registered."); 
+	        } 
+	    }
 
 	    @PostMapping("/applicants/verify-otp")
 
@@ -207,19 +220,19 @@ public class RegisterController {
 
 	        System.out.println(otp+email);
 
-	        if (!otpService.isEmailAssociatedWithOtp(email)) {
-
-	            return ResponseEntity.badRequest().body("Email is not correct");
-
-	        }
-	        if (otpService.isOtpExpired(email)) {
-
-	            return ResponseEntity.badRequest().body("Expired OTP. Please request a new one.");
-
-	        }
+//	        if (!otpService.isEmailAssociatedWithOtp(email)) {
+//
+//	            return ResponseEntity.badRequest().body("Email is not correct");
+//
+//	        }
+//	        if (otpService.isOtpExpired(email)) {
+//
+//	            return ResponseEntity.badRequest().body("Expired OTP. Please request a new one.");
+//
+//	        }
 	        if (otpService.validateOtp(email, otp)) {
 
-	            return ResponseEntity.ok("OTP verified. Proceed with Registration.");
+	            return ResponseEntity.ok("OTP verified successfully");
 
 	        } else {
 
@@ -252,7 +265,7 @@ public class RegisterController {
 
 	     	        regsiterService.saveapplicant(applicant);
 
-	        return ResponseEntity.ok("Password updated successfully.");
+	        return ResponseEntity.ok("Password reset was done successfully");
 
 	    }
 
@@ -264,5 +277,11 @@ public class RegisterController {
 
 	        return ResponseEntity.ok(applicants);
 
+	    }
+		@PostMapping("/signOut")
+	    public ResponseEntity<Void> signOut(@AuthenticationPrincipal ApplicantRegistration user) {
+	    	System.out.println("checking");
+	        SecurityContextHolder.clearContext();
+	        return ResponseEntity.noContent().build();
 	    }
 }

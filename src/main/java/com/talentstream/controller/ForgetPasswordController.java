@@ -25,7 +25,7 @@ import com.talentstream.service.JobRecruiterService;
 import com.talentstream.service.OtpService;
 
 @RestController
-@CrossOrigin
+@CrossOrigin("*")
 public class ForgetPasswordController {
 	@Autowired
     private OtpService otpService;
@@ -42,7 +42,7 @@ public class ForgetPasswordController {
     
     //private Map<String, String> tempEmailStorage = new HashMap<>();
     
-    @PostMapping("recruiters/send-otp")
+    @PostMapping("/recruiters/send-otp")
     public ResponseEntity<String> sendOtp(@RequestBody ResetPasswordRequest request) {
         String userEmail = request.getEmail();
         JobRecruiter jobRecruiter = jobRecruiterService.findByEmail(userEmail);
@@ -62,12 +62,12 @@ public class ForgetPasswordController {
 
         otpVerificationMap.put(userEmail, true); // Mark OTP as verified
 
-        return ResponseEntity.ok("OTP sent to your email.");
+        return ResponseEntity.ok("OTP sent successfully");
         }
     }
     
     
-    @PostMapping("recruiters/verify-otp")
+    @PostMapping("/recruiters/verify-otp")
     public ResponseEntity<String> verifyOtp(
        @RequestBody  OtpVerificationRequest verificationRequest
     ) {
@@ -86,7 +86,7 @@ public class ForgetPasswordController {
         }
 
         if (otpService.validateOtp(email, otp)) {
-            return ResponseEntity.ok("OTP verified. Proceed with password reset.");
+            return ResponseEntity.ok("OTP verified successfully");
         } else {
             return ResponseEntity.badRequest().body("Incorrect OTP.");
         }
@@ -95,7 +95,7 @@ public class ForgetPasswordController {
 
     
     
-    @PostMapping("recruiters/reset-password/set-new-password/{email}")
+    @PostMapping("/recruiters/reset-password/set-new-password/{email}")
     public ResponseEntity<String> setNewPassword(@RequestBody NewPasswordRequest request,  @PathVariable String email) {
         String newPassword = request.getNewPassword();
         String confirmedPassword = request.getConfirmedPassword();
@@ -120,7 +120,7 @@ public class ForgetPasswordController {
 
         //tempEmailStorage.remove(userEmail); // Clear temporary storage
 
-        return ResponseEntity.ok("Password updated successfully.");
+        return ResponseEntity.ok("Password reset was done successfully");
     }
 
 

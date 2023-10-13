@@ -2,7 +2,11 @@ package com.talentstream.entity;
 
 public class OtpVerificationRequest {
 
-    private String otp;
+    public OtpVerificationRequest() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	private String otp;
     private String email;
 	public String getOtp() {
 		return otp;

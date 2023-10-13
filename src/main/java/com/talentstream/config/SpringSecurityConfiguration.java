@@ -19,7 +19,6 @@ import com.talentstream.service.JobRecruiterService;
 
 
 @EnableWebSecurity
-
 class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	//@Autowired
 	private UserDetailsService myUserDetailsService;
@@ -55,9 +54,9 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		httpSecurity.csrf().disable()
 		
 		.authorizeRequests()
-		.antMatchers("/recruiters/company-profiles/{jobRecruiterId}","/recruiters/getCompanyProfile/{id}","/recruiters/saveJob/{jobRecruiterId}","recruiters/viewJobs").hasAnyRole("JOBRECRUITER")
-		.antMatchers("/applicants/recommended-jobs/{applicantId}","/viewApplicants","/applicants/createprofile","/applicants/getdetails/{applicantId}","/applicants/deletedetails/{applicantId}","/applicants/recommended-jobs/{applicantId}","/applicants/allapplicants/recommended-jobs","/applicants/job/{applicantId}/{jobId}","/applicants/viewjob/{jobId}","/applicants/applyjob").hasAnyRole("JOBAPPLICANT")
-	    .antMatchers("/recruiterLogin","recruiters/send-otp","recruiters/verify-otp","/Recruiters","/applicants","/recruiters/registration-send-otp","/applicantLogin","/applicants/sendotp","/applicants/verify-otp","/applicants/reset-password/{email}","recruiters/reset-password/set-new-password/{email}").permitAll()
+		.antMatchers("/recruiters/company-profiles/{jobRecruiterId}","/recruiters/getCompanyProfile/{id}","/recruiters/saveJob/{jobRecruiterId}","recruiters/viewJobs","/recruiters/{jobId}","/recruiters/searchByJobTitle","/recruiters/searchByLocation","/recruiters/searchByIndustryType","/recruiters/searchByEmployeeType","/searchByMinimumQualification","/recruiters/searchBySpecialization","/recruiters/searchBySkillName","/recruiters/searchBySkillNameAndExperience").hasAnyRole("JOBRECRUITER")
+		.antMatchers("/applicant/findjob/{applicantId}","/applicants/recommended-jobs/{id}","/viewApplicants","/applicants/createprofile","/applicants/getdetails/{applicantId}","/applicants/deletedetails/{applicantId}","/applicants/recommended-jobs/{applicantId}","/applicants/allapplicants/recommended-jobs","/applicants/job/{applicantId}/{jobId}","/applicant/{jobId}/{applicantId}","/{applicantId}/applyjob/{jobId}","/applicant/finjob/{applicantId}","/applicant/searchjobbyskillname/{applicantId}/jobs/{skillName}").hasAnyRole("JOBAPPLICANT")
+	    .antMatchers("/recruiters","/signOut","/applicant/forgotpassword/sendotp","/recruiterLogin","/recruiters/send-otp","/recruiters/verify-otp","/saveApplicant","/recruiters/registration-send-otp","/applicantLogin","/applicant/sendotp","/applicants/verify-otp","/applicants/reset-password/{email}","/recruiters/reset-password/set-new-password/{email}").permitAll()
 						.anyRequest().authenticated().and().
 						exceptionHandling().and().sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);

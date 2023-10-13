@@ -5,6 +5,7 @@ import javax.persistence.*;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @JsonIgnoreProperties({"job"})
@@ -25,16 +26,17 @@ public class JobRecruiter {
 
     @Column(nullable = false)
     private String password;
-
+    
+    @OneToMany( cascade = CascadeType.ALL)
+    private List<Job> jobs;
     
 
     @Column(nullable = false)
     private String roles="ROLE_JOBRECRUITER"; // Add the role field
-//    @ManyToOne
+// @ManyToOne
+// @JoinColumn(name = "company_profile_id")
 //
-//    @JoinColumn(name = "company_profile_id")
-//
-//    private CompanyProfile companyProfile;
+//  private CompanyProfile companyProfile;
 
     // Constructors, getters, setters, and other methods
 

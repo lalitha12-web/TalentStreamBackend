@@ -9,7 +9,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 @Service
 public class EmailUtil {
-	 @Autowired
+	    @Autowired
 	    private JavaMailSender javaMailSender;
 
 	    public void sendOtpEmail(String email, String otp) throws MessagingException {

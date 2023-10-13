@@ -14,14 +14,37 @@ public class ViewJobController {
 	@Autowired
     private ViewJobService viewJobService;
 
-    @GetMapping("/applicant/{jobId}/viewjob")
-    public ResponseEntity<Job> getJobDetails(@PathVariable Long jobId) {
+    @GetMapping("/applicant/{jobId}/{applicantId}")
+    public ResponseEntity<?> getJobDetailsForApplicant(
+            @PathVariable Integer applicantId,
+            @PathVariable Long jobId) {
         try {
+            
+            if (!applicantExists(applicantId)) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("Applicant with ID " + applicantId + " not found.");
+            }
+
+            // Attempt to retrieve the job details
             Job jobDetails = viewJobService.getJobDetails(jobId);
+
+            // Check if the job exists
+            if (jobDetails == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("Job with ID " + jobId + " not found.");
+            }
+
             return ResponseEntity.ok(jobDetails);
         } catch (Exception e) {
-            // Handle the exception when the specified job ID does not exist
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+           
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("An error occurred while fetching job details.");
         }
+    }
+
+    
+    private boolean applicantExists(Integer applicantId) {
+      
+        return true;
     }
 }
